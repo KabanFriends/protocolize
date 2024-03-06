@@ -1,10 +1,13 @@
 package dev.simplix.protocolize.velocity.providers;
 
+import com.google.gson.JsonParser;
 import dev.simplix.protocolize.api.ComponentConverter;
 import dev.simplix.protocolize.api.providers.ComponentConverterProvider;
+import dev.simplix.protocolize.velocity.util.TagUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.querz.nbt.tag.Tag;
 
@@ -44,7 +47,7 @@ public final class VelocityComponentConverterProvider implements ComponentConver
 
         @Override
         public Tag<?> toNbt(Component component) {
-            throw new UnsupportedOperationException("Adventure does not support nbt serialization yet");
+            return TagUtil.fromJson(JsonParser.parseString(JSONComponentSerializer.json().serialize(component)));
         }
 
         @Override
