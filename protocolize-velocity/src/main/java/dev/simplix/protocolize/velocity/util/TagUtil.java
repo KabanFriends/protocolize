@@ -8,6 +8,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 public class TagUtil {
+
     public static Tag<?> fromJson(JsonElement json) {
         if (json instanceof JsonPrimitive) {
             JsonPrimitive jsonPrimitive = (JsonPrimitive)json;
@@ -95,10 +96,10 @@ public class TagUtil {
 
                     listTag = new LongArrayTag(longs);
                 } else {
-                    List<Tag<?>> tagItems = new ArrayList(jsonArray.size());
+                    ListTag<CompoundTag> tagItems = new ListTag(CompoundTag.class);
 
                     Tag<?> subTag;
-                    for(Iterator var8 = jsonArray.iterator(); var8.hasNext(); tagItems.add(subTag)) {
+                    for(Iterator var8 = jsonArray.iterator(); var8.hasNext(); tagItems.add((CompoundTag) subTag)) {
                         JsonElement jsonEl = (JsonElement)var8.next();
                         subTag = fromJson(jsonEl);
                         if (!(subTag instanceof CompoundTag)) {
@@ -108,13 +109,7 @@ public class TagUtil {
                         }
                     }
 
-                    ListTag lt = new ListTag(clazz);
-
-                    for (Tag<?> item : tagItems) {
-                        lt.add(item);
-                    }
-
-                    listTag = lt;
+                    listTag = tagItems;
                 }
 
                 return listTag;
